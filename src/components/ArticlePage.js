@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { makeEmojiList } from "../utils";
+import useDocumentTitle from "../hooks/useDocumentTitle";
+import useQuery from "../hooks/useQuery";
 
 function ArticlePage() {
   // fetch data for a post
   const { id } = useParams();
+  const { isLoaded, data: post } = useQuery(`http://localhost:4000/posts/${id}`);
+
+  /*
+  //before useQuery
   const [isLoaded, setIsLoaded] = useState(false);
   const [post, setPost] = useState(null);
 
@@ -18,12 +24,16 @@ function ArticlePage() {
         setIsLoaded(true);
       });
   }, [url]);
+  */
 
   // set the document title
   const pageTitle = post ? `Underreacted | ${post.title}` : "Underreacted";
+  /*
   useEffect(() => {
     document.title = pageTitle;
   }, [pageTitle]);
+  */
+  useDocumentTitle(pageTitle);
 
   if (!isLoaded) return <h3>Loading...</h3>;
 
